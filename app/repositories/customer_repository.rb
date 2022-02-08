@@ -1,39 +1,14 @@
 require "csv"
 require_relative "../models/customer"
+require_relative "base_repository"
 
-class CustomerRepository
-  def initialize(csv_path)
-    @csv_path = csv_path
-    @customers = []
-
-    load_csv if File.exist?(@csv_path)
-  end
-
-  def all
-    @customers
-  end
-
-  def create(customer)
-    customer.id = next_id
-    @customers << customer
-
-    update_csv
-  end
-
-  def find(id)
-    @customers.find { |customer| customer.id == id } # customer instance
-  end
-
+class CustomerRepository < BaseRepository
   private
-
-  def next_id
-    @customers.empty? ? 1 : @customers.last.id + 1
-  end
 
   def update_csv
     CSV.open(@csv_path, "wb") do |csv|
       csv << %w[id name address]
-      @customers.each do |customer|
+      @models.each do |customer|
         csv << [customer.id, customer.name, customer.address]
       end
     end
@@ -45,7 +20,7 @@ class CustomerRepository
       # Type casting
       row[:id] = row[:id].to_i
 
-      @customers << Customer.new(
+      @models << Customer.new(
         id: row[:id],
         name: row[:name],
         address: row[:address]

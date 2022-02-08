@@ -7,4 +7,7 @@ class Meal
     @name = attributes[:name]
     @price = attributes[:price]
   end
+
+  # returns the class headers
+  # instance method #to_a
 end
