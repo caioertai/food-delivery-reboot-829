@@ -8,6 +8,11 @@ class Meal
     @price = attributes[:price]
   end
 
-  # returns the class headers
-  # instance method #to_a
+  def self.headers
+    %w[id name price]
+  end
+
+  def to_a
+    [id, name, price]
+  end
 end

@@ -3,16 +3,11 @@ require_relative "../models/meal"
 require_relative "base_repository"
 
 class MealRepository < BaseRepository
-  private
-
-  def update_csv
-    CSV.open(@csv_path, "wb") do |csv|
-      csv << %w[id name price] # <----- id name price
-      @models.each do |meal|
-        csv << [meal.id, meal.name, meal.price]
-      end
-    end
+  def repo_class
+    Meal
   end
+
+  private
 
   def load_csv
     CSV.foreach(@csv_path, headers: true, header_converters: :symbol) do |row|
@@ -22,7 +17,7 @@ class MealRepository < BaseRepository
       row[:price] = row[:price].to_i
       # row => { id: 1, price: 10, ... }
 
-      @models << Meal.new(
+      @elements << Meal.new(
         id: row[:id],
         name: row[:name],
         price: row[:price]

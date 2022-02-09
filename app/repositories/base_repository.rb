@@ -4,29 +4,38 @@ require "csv"
 class BaseRepository
   def initialize(csv_path)
     @csv_path = csv_path
-    @models = []
+    @elements = []
 
     load_csv if File.exist?(@csv_path)
   end
 
   def all
-    @models
+    @elements
   end
 
-  def create(model)
-    model.id = next_id
-    @models << model
+  def create(element)
+    element.id = next_id
+    @elements << element
 
     update_csv
   end
 
   def find(id)
-    @models.find { |model| model.id == id } # meal instance
+    @elements.find { |element| element.id == id } # meal instance
   end
 
   private
 
+  def update_csv
+    CSV.open(@csv_path, "wb") do |csv|
+      csv << repo_class.headers
+      @elements.each do |element|
+        csv << element.to_a
+      end
+    end
+  end
+
   def next_id
-    @models.empty? ? 1 : @models.last.id + 1
+    @elements.empty? ? 1 : @elements.last.id + 1
   end
 end
