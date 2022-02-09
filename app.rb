@@ -11,11 +11,10 @@ require_relative "app/controllers/sessions_controller"
 
 meal_repository = MealRepository.new("data/meals.csv")
 customer_repository = CustomerRepository.new("data/customers.csv")
+employee_repository = EmployeeRepository.new("data/employees.csv")
 
 meals_controller = MealsController.new(meal_repository)
 customers_controller = CustomersController.new(customer_repository)
-
-employee_repository = EmployeeRepository.new("data/employees.csv")
 sessions_controller = SessionsController.new(employee_repository)
 
 router = Router.new(meals_controller, customers_controller, sessions_controller)
