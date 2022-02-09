@@ -11,9 +11,6 @@ class CustomerRepository < BaseRepository
 
   def load_csv
     CSV.foreach(@csv_path, headers: true, header_converters: :symbol) do |row|
-      # Type casting
-      row[:id] = row[:id].to_i
-
       @elements << Customer.new(
         id: row[:id],
         name: row[:name],
