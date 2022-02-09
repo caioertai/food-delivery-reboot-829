@@ -9,6 +9,14 @@ class BaseRepository
     load_csv if File.exist?(@csv_path)
   end
 
+  def repo_class_name
+    self.class.name.gsub(/Repository$/, "")
+  end
+
+  def repo_class
+    Object.const_get(repo_class_name)
+  end
+
   def all
     @elements
   end
@@ -32,6 +40,12 @@ class BaseRepository
       @elements.each do |element|
         csv << element.to_a
       end
+    end
+  end
+
+  def load_csv
+    CSV.foreach(@csv_path, headers: true, header_converters: :symbol) do |row|
+      @elements << repo_class.new(row)
     end
   end
 
