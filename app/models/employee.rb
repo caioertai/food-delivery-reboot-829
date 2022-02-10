@@ -13,6 +13,10 @@ class Employee
     @role == "manager"
   end
 
+  def rider?
+    @role == "rider"
+  end
+
   def password_match?(password)
     @password == password
   end

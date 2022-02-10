@@ -9,4 +9,8 @@ class Order
     @employee = attributes[:employee]
     @customer = attributes[:customer]
   end
+
+  def delivered?
+    @delivered
+  end
 end

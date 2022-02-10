@@ -35,6 +35,10 @@ class OrderRepository
 
   def update_csv
     CSV.open(@csv_path, "wb") do |csv|
+      csv << %w[id delivered meal_id customer_id employee_id]
+      @orders.each do |order|
+        csv << [order.id, order.delivered?, order.meal.id, order.customer.id, order.employee.id]
+      end
     end
   end
 

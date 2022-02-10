@@ -13,6 +13,10 @@ class EmployeeRepository
     @employees
   end
 
+  def riders
+    all.select { |employee| employee.rider? }
+  end
+
   def create(employee)
     employee.id = next_id
     @employees << employee
