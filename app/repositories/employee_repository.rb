@@ -47,7 +47,6 @@ class EmployeeRepository
     end
   end
 
-
   def load_csv
     CSV.foreach(@csv_path, headers: true, header_converters: :symbol) do |row|
       # Type casting

@@ -15,6 +15,31 @@ class OrdersController
     @employees_view = EmployeesView.new
   end
 
+  def mark_as_delivered(current_user)
+    @orders_view.display(current_user.undelivered_orders)
+    # Ask OrdersView for and index
+    order_index = @orders_view.ask_for_index
+    # Ask Array for order
+    order = orders[order_index]
+    # Ask OrderRepo to mark the order as delivered
+    @order_repository.mark_as_delivered(order.id)
+  end
+
+  def list_my_orders(current_user)
+    @orders_view.display(current_user.undelivered_orders)
+  end
+
+  # def list_my_orders(current_user)
+  #   # Ask OrderRepo for orders from me?
+  #   orders = @order_repository.undelivered_from(current_user)
+  #   # Ask OrdersView to display them
+  #   @orders_view.display(orders)
+  # end
+
+  def method_name
+
+  end
+
   def add
     order_meal = get_meal
     order_customer = get_customer

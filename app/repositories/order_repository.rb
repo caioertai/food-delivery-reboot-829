@@ -16,13 +16,25 @@ class OrderRepository
     @orders
   end
 
+  def mark_as_delivered(id)
+    find(id).deliver!
+    update_csv
+  end
+
   def undelivered_orders
     all.reject { |order| order.delivered? }
+  end
+
+  def undelivered_from(employee)
+    undelivered_orders.select do |order|
+      order.employee == employee
+    end
   end
 
   def create(order)
     order.id = next_id
     @orders << order
+    order.employee.add_order(order)
 
     update_csv
   end
@@ -48,23 +60,20 @@ class OrderRepository
 
   def load_csv
     CSV.foreach(@csv_path, headers: true, header_converters: :symbol) do |row|
-      # convert row into an Order instance
-      # row => {:id=>"1", :deliver=>"true",
-      #         :meal_id=>"2", :employee_id=>"2", :customer_id=>"1"}
-      # Typecasting
       row[:id] = row[:id].to_i
       row[:meal_id] = row[:meal_id].to_i
       row[:customer_id] = row[:customer_id].to_i
       row[:employee_id] = row[:employee_id].to_i
       row[:delivered] = row[:delivered] == "true"
-
+      employee = @employee_repository.find(row[:employee_id])
       order = Order.new(
         id: row[:id],
         delivered: row[:delivered],
         meal: @meal_repository.find(row[:meal_id]),
         customer: @customer_repository.find(row[:customer_id]),
-        employee: @employee_repository.find(row[:employee_id]),
+        employee: employee,
       )
+      employee.add_order(order)
 
       @orders << order
     end

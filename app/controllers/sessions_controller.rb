@@ -8,7 +8,7 @@ class SessionsController
 
   def login
     # Ask VIEW to ask user for username
-    username = "john"
+    username = "ringo"
     # Ask VIEW to ask user for password
     password = "secret"
     # Ask REPO(employee) for the user of the given username

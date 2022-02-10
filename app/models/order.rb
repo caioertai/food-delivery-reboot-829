@@ -13,4 +13,8 @@ class Order
   def delivered?
     @delivered
   end
+
+  def deliver!
+    @delivered = true
+  end
 end
