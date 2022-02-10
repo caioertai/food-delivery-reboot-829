@@ -31,6 +31,7 @@ class Router
     puts "3. To add a customer"
     puts "4. To list all customers"
     puts "5. To add an order"
+    puts "6. To list undelivered orders"
     puts "0. Quit"
   end
 
@@ -41,6 +42,7 @@ class Router
     when 3 then @customers_controller.add
     when 4 then @customers_controller.list
     when 5 then @orders_controller.add
+    when 6 then @orders_controller.list_undelivered_orders
     when 0 then @running = false
     end
   end

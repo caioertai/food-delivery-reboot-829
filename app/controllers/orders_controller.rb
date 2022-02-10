@@ -38,6 +38,13 @@ class OrdersController
     @order_repository.create(order)
   end
 
+  def list_undelivered_orders
+    # Ask OrderRepo for undelivered orders
+    undelivered_orders = @order_repository.undelivered_orders
+    # Ask OrdersView to display them
+    @orders_view.display(undelivered_orders)
+  end
+
   private
 
   def get_meal

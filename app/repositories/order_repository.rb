@@ -16,6 +16,10 @@ class OrderRepository
     @orders
   end
 
+  def undelivered_orders
+    all.reject { |order| order.delivered? }
+  end
+
   def create(order)
     order.id = next_id
     @orders << order
